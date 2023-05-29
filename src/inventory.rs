@@ -31,7 +31,7 @@ pub fn load_inventory(base: impl AsRef<Path>) -> anyhow::Result<Inventory> {
         if path.file_stem().unwrap() == "defaults" {
             group_manifests.insert(relative_path.parent().unwrap().to_owned(), manifest);
         } else {
-            host_manifests.push((relative_path.to_owned(), manifest));
+            host_manifests.push((relative_path.with_extension(""), manifest));
         }
     }
 
@@ -40,6 +40,7 @@ pub fn load_inventory(base: impl AsRef<Path>) -> anyhow::Result<Inventory> {
         .map(|(host_path, host_manifest)| {
             host_path
                 .ancestors()
+                .skip(1)
                 .flat_map(|group_path| group_manifests.get(group_path))
                 .fold(host_manifest, Manifest::or)
                 .validate(host_path)
