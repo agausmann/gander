@@ -6,3 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.71"
+indexmap = { version = "1.9.3", features = ["serde"] }
+russh = "0.37.1"
+serde = { version = "1.0.163", features = ["derive"] }
+toml = { version = "0.7.4", features = ["preserve_order"] }
+walkdir = "2.3.3"
