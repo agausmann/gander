@@ -60,6 +60,7 @@ pub struct HostSpec {
     pub path: PathBuf,
     pub address: String,
     pub ssh_user: String,
+    pub ssh_port: u16,
     pub extra_keys: HashMap<String, String>,
 }
 
@@ -70,6 +71,9 @@ pub struct Manifest {
 
     #[serde(default)]
     pub ssh_user: Option<String>,
+
+    #[serde(default)]
+    pub ssh_port: Option<u16>,
 
     #[serde(flatten)]
     pub extra_keys: HashMap<String, String>,
@@ -86,6 +90,7 @@ impl Manifest {
         Self {
             address: self.address.or_else(|| other.address.clone()),
             ssh_user: self.ssh_user.or_else(|| other.ssh_user.clone()),
+            ssh_port: self.ssh_port.or(other.ssh_port),
             extra_keys,
         }
     }
@@ -95,6 +100,7 @@ impl Manifest {
             path,
             address: self.address.context("missing key: `address`")?,
             ssh_user: self.ssh_user.context("missing key: `ssh_user`")?,
+            ssh_port: self.ssh_port.unwrap_or(22),
             extra_keys: self.extra_keys,
         })
     }
