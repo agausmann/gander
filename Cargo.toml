@@ -8,11 +8,14 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.71"
 async-trait = "0.1.68"
+dirs = "5.0.1"
 futures = "0.3.28"
+gpgme = "0.11.0"
 indexmap = { version = "1.9.3", features = ["serde"] }
 russh = "0.37.1"
 russh-keys = "0.37.1"
 serde = { version = "1.0.163", features = ["derive"] }
 tokio = { version = "1.28.2", features = ["full"] }
+tokio-stream = { version = "0.1.14", features = ["full"] }
 toml = { version = "0.7.4", features = ["preserve_order"] }
 walkdir = "2.3.3"

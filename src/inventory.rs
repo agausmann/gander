@@ -1,6 +1,7 @@
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
+    sync::Arc,
 };
 
 use anyhow::Context;
@@ -35,7 +36,7 @@ pub fn load_inventory(base: impl AsRef<Path>) -> anyhow::Result<Inventory> {
         }
     }
 
-    let hosts: Vec<HostSpec> = host_manifests
+    let hosts = host_manifests
         .into_iter()
         .map(|(host_path, host_manifest)| {
             host_path
@@ -44,15 +45,16 @@ pub fn load_inventory(base: impl AsRef<Path>) -> anyhow::Result<Inventory> {
                 .flat_map(|group_path| group_manifests.get(group_path))
                 .fold(host_manifest, Manifest::or)
                 .validate(host_path)
+                .map(Arc::new)
         })
-        .collect::<anyhow::Result<Vec<HostSpec>>>()?;
+        .collect::<anyhow::Result<_>>()?;
 
     Ok(Inventory { hosts })
 }
 
 #[derive(Debug)]
 pub struct Inventory {
-    pub hosts: Vec<HostSpec>,
+    pub hosts: Vec<Arc<HostSpec>>,
 }
 
 #[derive(Debug)]
