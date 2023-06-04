@@ -9,10 +9,10 @@ use tokio::time::timeout;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let inventory = load_inventory("/home/goose/dev/flock/inventory")?;
+    let inventory = load_inventory("example_fleet/inventory")?;
     println!("{:#?}", inventory);
 
-    let playbook = load_playbook("/home/goose/dev/flock/playbook.toml")?;
+    let playbook = load_playbook("example_fleet/playbook.toml")?;
     println!("{:#?}", playbook);
 
     let ssh_config = Arc::new(russh::client::Config {
